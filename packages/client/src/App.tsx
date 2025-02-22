@@ -1,13 +1,29 @@
 import { AccountButton } from "@latticexyz/entrykit/internal";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useWorldContract } from "./mud/useWorldContract";
 import { useSync } from "@latticexyz/store-sync/react";
+import { Matches } from "@latticexyz/stash/internal";
+import type { getSchemaPrimitives } from "@latticexyz/protocol-parser/internal";
 import { stash } from "./mud/stash";
 import config from "contracts/mud.config";
+
+type OrderType = getSchemaPrimitives<{
+  readonly orderId: { readonly type: "uint256"; readonly internalType: "uint256" };
+  readonly user: { readonly type: "address"; readonly internalType: "address" };
+  readonly baseToken: { readonly type: "address"; readonly internalType: "address" };
+  readonly quoteToken: { readonly type: "address"; readonly internalType: "address" };
+  readonly price: { readonly type: "uint256"; readonly internalType: "uint256" };
+  readonly amount: { readonly type: "uint256"; readonly internalType: "uint256" };
+  readonly isBuy: { readonly type: "bool"; readonly internalType: "bool" };
+  readonly active: { readonly type: "bool"; readonly internalType: "bool" };
+  readonly timestamp: { readonly type: "uint256"; readonly internalType: "uint256" };
+}>;
 
 export function App() {
   const [amount, setAmount] = useState<number | undefined>(undefined);
   const [price, setPrice] = useState<number | undefined>(undefined);
+  const [topBuyOrders, setTopBuyOrders] = useState<OrderType[]>([]); 
+  const [topSellOrders, setTopSellOrders] = useState<OrderType[]>([]); 
   const { Order } = config.tables;
 
   const sync = useSync();
@@ -19,24 +35,51 @@ export function App() {
 
     console.log(orderRecord);
   }
+    
+  // stash.subscribeTable({
+  //   table: Order,
+  //   subscriber: (update) => {
+  //     console.log("Order update", update);
+  //   }
+  // })
 
-//   function subscribeOrderRecord() {
-//     const { Order } = config.tables;
-//     const orderRecord = stash.subscribeTable({
-//       table: Order,
-//       subscriber: (update) => {
-//         console.log("Order update", update);
-//       }
-//   })
-// }
+  async function getHighestBuyOrders() {
+    // 条件: active === true かつ isBuy === true
+    const orders = stash.runQuery({
+      query: [Matches(Order, { active: true, isBuy: true })],
+      options: {
+        includeRecords: true
+      }
+    })
+
+    const orderEntries = Object.entries(orders.records[""].Order);
+    const sortedOrderEntries = orderEntries.sort(([, a], [, b]) => {
+      return a.price > b.price ? -1 : a.price < b.price ? 1 : 0;
+    });
+    const sortedOrders = sortedOrderEntries.map(([, order]) => order);
     
+    const top15BuyOrders = sortedOrders.slice(0, 15);
+    setTopBuyOrders(top15BuyOrders);
+  }
+
+  async function getLowestSellOrders() {
+    // 条件: active === true かつ isBuy === false
+    const orders = stash.runQuery({
+      query: [Matches(Order, { active: true, isBuy: false })],
+      options: {
+        includeRecords: true
+      }
+    })
+
+    const orderEntries = Object.entries(orders.records[""].Order);
+    const sortedOrderEntries = orderEntries.sort(([, a], [, b]) => {
+      return a.price < b.price ? -1 : a.price > b.price ? 1 : 0;
+    });
+    const sortedOrders = sortedOrderEntries.map(([, order]) => order);
     
-  stash.subscribeTable({
-    table: Order,
-    subscriber: (update) => {
-      console.log("Order update", update);
-    }
-  })
+    const top15SellOrders = sortedOrders.slice(0, 15);
+    setTopSellOrders(top15SellOrders);
+  }
 
   const handlePlaceOrder = useMemo(() => {
     if (!sync.data || !worldContract) return undefined;
@@ -88,11 +131,36 @@ export function App() {
         </button>
         <button
           type="button"
-          onClick={() => logOrderRecord(BigInt(0))}
+          onClick={() => {
+            getHighestBuyOrders();
+            getLowestSellOrders();
+          }}
           className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
         >
-          Log Order Record
+          Fresh Orders
         </button>
+      <div className="mt-4">
+        <h3 className="font-bold">Top Buy Orders</h3>
+        <ul>
+          {topBuyOrders.map((order) => (
+            <li key={order.orderId} className="border-b border-gray-300 py-2">
+              <span>Amount: {order.amount.toString()}</span>, 
+              <span> Price: {order.price.toString()}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="mt-4">
+        <h3 className="font-bold">Top Sell Orders</h3>
+        <ul>
+          {topSellOrders.map((order) => (
+            <li key={order.orderId} className="border-b border-gray-300 py-2">
+              <span>Amount: {order.amount.toString()}</span>, 
+              <span> Price: {order.price.toString()}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
       </div>
     </>
   );
