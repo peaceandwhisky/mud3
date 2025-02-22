@@ -1,4 +1,6 @@
-import { Chain, http, webSocket } from "viem";
+import type { Chain } from "viem";
+import { http, webSocket } from "viem";
+
 import { anvil } from "viem/chains";
 import { createWagmiConfig } from "@latticexyz/entrykit/internal";
 import { rhodolite, garnet, redstone } from "@latticexyz/common/chains";

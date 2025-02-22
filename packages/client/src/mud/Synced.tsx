@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useSyncStatus } from "./useSyncStatus";
-import { TableRecord } from "@latticexyz/stash/internal";
-import { SyncProgress } from "@latticexyz/store-sync/internal";
+import type { TableRecord } from "@latticexyz/stash/internal";
+import type { SyncProgress } from "@latticexyz/store-sync/internal";
 
 export type Props = {
   children: ReactNode;

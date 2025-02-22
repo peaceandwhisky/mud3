@@ -1,4 +1,5 @@
-import { DetailedHTMLProps, ButtonHTMLAttributes, useState, useRef, useCallback, MouseEventHandler } from "react";
+import type { DetailedHTMLProps, ButtonHTMLAttributes, MouseEventHandler } from "react";
+import { useState, useRef, useCallback } from "react";
 
 export type AsyncButtonProps = {
   pending?: boolean;

@@ -1,6 +1,8 @@
 import { useClient } from "wagmi";
 import { chainId, getWorldAddress } from "../common";
-import { Account, Chain, Client, GetContractReturnType, Transport, getContract } from "viem";
+import type { Account, Chain, Client, GetContractReturnType, Transport } from "viem";
+import { getContract } from "viem";
+
 import { useQuery } from "@tanstack/react-query";
 import { useSessionClient } from "@latticexyz/entrykit/internal";
 import { observer } from "@latticexyz/explorer/observer";
@@ -34,7 +36,7 @@ export function useWorldContract():
         },
       });
     },
-    staleTime: Infinity,
+    staleTime: Number.POSITIVE_INFINITY,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

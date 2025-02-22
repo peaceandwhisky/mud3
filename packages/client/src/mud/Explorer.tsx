@@ -26,7 +26,13 @@ export function Explorer() {
           </>
         )}
       </button>
-      {open ? <iframe src={`${explorerUrl}/${worldAddress}`} className="bg-black h-[50vh]" /> : null}
+      {open ? (
+        <iframe
+          src={`${explorerUrl}/${worldAddress}`}
+          className="bg-black h-[50vh]"
+          title="World Explorer" // title 属性を追加
+        />
+      ) : null}
     </div>
   );
 }

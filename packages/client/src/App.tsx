@@ -4,11 +4,8 @@ import { useWorldContract } from "./mud/useWorldContract";
 import { useSync } from "@latticexyz/store-sync/react";
 
 export function App() {
-
   const [amount, setAmount] = useState<number | undefined>(undefined);
   const [price, setPrice] = useState<number | undefined>(undefined);
-
-
 
   const sync = useSync();
   const worldContract = useWorldContract();
@@ -46,13 +43,13 @@ export function App() {
       <div className="fixed top-16 right-2">
         <input
           type="number"
-          placeholder="Enter a amount"
+          placeholder="Enter amount"
           className="border border-gray-300 rounded px-2 py-1 mb-2"
           onChange={(e) => setAmount(Number(e.target.value))}
         />
         <input
           type="number"
-          placeholder="Enter a price"
+          placeholder="Enter price"
           className="border border-gray-300 rounded px-2 py-1 mb-2"
           onChange={(e) => setPrice(Number(e.target.value))}
         />
@@ -63,7 +60,7 @@ export function App() {
         >
           Place Order
         </button>
-      </div>      
+      </div>
     </>
   );
 }

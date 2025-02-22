@@ -7,13 +7,19 @@ import { Explorer } from "./mud/Explorer";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "./ui/ErrorFallback";
 
-createRoot(document.getElementById("react-root")!).render(
-  <StrictMode>
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <Providers>
-        <App />
-        <Explorer />
-      </Providers>
-    </ErrorBoundary>
-  </StrictMode>,
-);
+const rootElement = document.getElementById("react-root");
+
+if (rootElement) {
+  createRoot(rootElement).render(
+    <StrictMode>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <Providers>
+          <App />
+          <Explorer />
+        </Providers>
+      </ErrorBoundary>
+    </StrictMode>
+  );
+} else {
+  console.error("Failed to find the root element");
+}
