@@ -8,6 +8,7 @@ import config from "contracts/mud.config";
 export function App() {
   const [amount, setAmount] = useState<number | undefined>(undefined);
   const [price, setPrice] = useState<number | undefined>(undefined);
+  const { Order } = config.tables;
 
   const sync = useSync();
   const worldContract = useWorldContract();
@@ -15,33 +16,50 @@ export function App() {
   function logOrderRecord(orderId: bigint) {
     const { Order } = config.tables;
     const orderRecord = stash.getRecord({ table: Order, key: { orderId } });
+
     console.log(orderRecord);
   }
 
-  const handlePlaceOrder = useMemo(
-    () =>
-      sync.data && worldContract
-        ? async () => {
-            try {
-              if (amount !== undefined && price !== undefined) {
-                const tx = await worldContract.write.placeOrder([
-                  "0x17E42453D681E11a3bB3a9dcA6faF5dE0eF72624",
-                  "0xb7427086524627fa8AdF96A04aCF5e3281A929C5",
-                  BigInt(amount),
-                  BigInt(price)
-                ]);
-                await sync.data.waitForTransaction(tx);
-                console.log("Order placed successfully");
-              } else {
-                console.error("Input value is not valid");
-              }
-            } catch (error) {
-              console.error("Failed to place order:", error);
-            }
-          }
-        : undefined,
-    [sync.data, worldContract, amount, price]
-  );
+//   function subscribeOrderRecord() {
+//     const { Order } = config.tables;
+//     const orderRecord = stash.subscribeTable({
+//       table: Order,
+//       subscriber: (update) => {
+//         console.log("Order update", update);
+//       }
+//   })
+// }
+    
+    
+  stash.subscribeTable({
+    table: Order,
+    subscriber: (update) => {
+      console.log("Order update", update);
+    }
+  })
+
+  const handlePlaceOrder = useMemo(() => {
+    if (!sync.data || !worldContract) return undefined;
+
+    return async () => {
+      try {
+        if (amount !== undefined && price !== undefined) {
+          const tx = await worldContract.write.placeOrder([
+            "0x17E42453D681E11a3bB3a9dcA6faF5dE0eF72624",
+            "0xb7427086524627fa8AdF96A04aCF5e3281A929C5",
+            BigInt(amount),
+            BigInt(price),
+          ]);
+          await sync.data.waitForTransaction(tx);
+          console.log("Order placed successfully");
+        } else {
+          console.error("Input value is not valid");
+        }
+      } catch (error) {
+        console.error("Failed to place order:", error);
+      }
+    };
+  }, [sync.data, worldContract, amount, price]);
 
   return (
     <>
