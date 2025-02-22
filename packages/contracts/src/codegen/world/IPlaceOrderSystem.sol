@@ -9,5 +9,5 @@ pragma solidity >=0.8.24;
  * @dev This interface is automatically generated from the corresponding system contract. Do not edit manually.
  */
 interface IPlaceOrderSystem {
-  function app__placeOrder(address baseToken, address quoteToken, uint256 amount, uint256 price) external;
+  function placeOrder(address baseToken, address quoteToken, uint256 amount, uint256 price) external;
 }

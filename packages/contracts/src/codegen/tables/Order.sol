@@ -28,8 +28,8 @@ struct OrderData {
 }
 
 library Order {
-  // Hex below is the result of `WorldResourceIdLib.encode({ namespace: "app", name: "Order", typeId: RESOURCE_TABLE });`
-  ResourceId constant _tableId = ResourceId.wrap(0x746261707000000000000000000000004f726465720000000000000000000000);
+  // Hex below is the result of `WorldResourceIdLib.encode({ namespace: "", name: "Order", typeId: RESOURCE_TABLE });`
+  ResourceId constant _tableId = ResourceId.wrap(0x746200000000000000000000000000004f726465720000000000000000000000);
 
   FieldLayout constant _fieldLayout =
     FieldLayout.wrap(0x009e080014141420200101200000000000000000000000000000000000000000);
