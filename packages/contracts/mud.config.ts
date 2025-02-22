@@ -12,17 +12,17 @@ export default defineWorld({
     },
     Order: {
       schema: {
+        orderId: "bytes32",
         user: "address",
         baseToken: "address",
         quoteToken: "address",
         price: "uint256",
         amount: "uint256",
-        orderSide: "uint8",
-        timestamp: "uint256",
+        isBuy: "bool",
         active: "bool",
-        next: "uint256",
+        timestamp: "uint256",
       },
-      key: ["user","baseToken", "quoteToken", "price", "amount"],
+      key: ["orderId"],
     },
   },
 });

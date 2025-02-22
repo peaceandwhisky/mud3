@@ -5,17 +5,14 @@ import { System } from "@latticexyz/world/src/System.sol";
 import { Order } from "./codegen/index.sol";
 
 contract PlaceOrderSystem is System {
-  function placeOrder(uint256 price) public returns (uint256) {
-    address user = 0x0A772258e2f36999C6aA57B2Ba09B78caF7EbAd3;
-    address baseToken = 0x17E42453D681E11a3bB3a9dcA6faF5dE0eF72624;
-    address quoteToken = 0xb7427086524627fa8AdF96A04aCF5e3281A929C5;
-    uint256 amount = 100;
-    uint8 orderSide = 0;
-    uint256 timestamp = 1740102394;
+  function placeOrder(address baseToken, address quoteToken, uint256 amount, uint256 price) public {
+    address user = msg.sender;
+    bool isBuy = true;
+    uint256 timestamp = block.timestamp;
     bool active = true;
-    uint256 next = 0;
+
+    bytes32 orderId = keccak256(abi.encodePacked(user, baseToken, quoteToken, price, amount, isBuy, timestamp));
     
-    Order.set(user, baseToken, quoteToken, price, amount, orderSide, timestamp, active, next);
-    return next;
+    Order.set(orderId, user, baseToken, quoteToken, price, amount, isBuy, active, timestamp);
   }
 }
