@@ -1,5 +1,5 @@
 import { AccountButton } from "@latticexyz/entrykit/internal";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { useWorldContract } from "./mud/useWorldContract";
 import { useSync } from "@latticexyz/store-sync/react";
 import { Matches } from "@latticexyz/stash/internal";
@@ -43,8 +43,46 @@ export function App() {
   //   }
   // })
 
+
+  const buyOrderQuery = stash.subscribeQuery({
+    query: [Matches(Order, { active: true, isBuy: true })]
+  })
+
+  buyOrderQuery.subscribe((update) => {
+    const currentOrder = update[0]?.current;
+    if (currentOrder) {
+      console.log("Buy Order Update:", currentOrder);
+      setTopBuyOrders((prevOrders) => {
+        const orderExists = prevOrders.some(order => order.orderId === currentOrder.orderId);
+        if (!orderExists) {
+          const newOrders = [...prevOrders, currentOrder];
+          return newOrders.sort((a, b) => Number(b.price) - Number(a.price)); // bigint を number に変換
+        }
+        return prevOrders;
+      });
+    }
+  });
+
+  const sellOrderQuery = stash.subscribeQuery({
+    query: [Matches(Order, { active: true, isBuy: false })]
+  })
+
+  sellOrderQuery.subscribe((update) => {
+    const currentOrder = update[0]?.current;
+    if (currentOrder) {
+      console.log("Sell Order Update:", currentOrder);
+      setTopSellOrders((prevOrders) => {
+        const orderExists = prevOrders.some(order => order.orderId === currentOrder.orderId);
+        if (!orderExists) {
+          const newOrders = [...prevOrders, currentOrder];
+          return newOrders.sort((a, b) => Number(a.price) - Number(b.price)); // bigint を number に変換
+        }
+        return prevOrders;
+      });
+    }
+  });
+
   async function getHighestBuyOrders() {
-    // 条件: active === true かつ isBuy === true
     const orders = stash.runQuery({
       query: [Matches(Order, { active: true, isBuy: true })],
       options: {
@@ -63,7 +101,6 @@ export function App() {
   }
 
   async function getLowestSellOrders() {
-    // 条件: active === true かつ isBuy === false
     const orders = stash.runQuery({
       query: [Matches(Order, { active: true, isBuy: false })],
       options: {
