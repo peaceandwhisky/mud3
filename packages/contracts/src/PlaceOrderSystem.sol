@@ -2,7 +2,7 @@
 pragma solidity >=0.8.24;
 
 import { System } from "@latticexyz/world/src/System.sol";
-import { Order } from "./codegen/index.sol";
+import { Order, OrderCounter } from "./codegen/index.sol";
 
 contract PlaceOrderSystem is System {
   function placeOrder(address baseToken, address quoteToken, uint256 amount, uint256 price) public {
@@ -11,8 +11,9 @@ contract PlaceOrderSystem is System {
     uint256 timestamp = block.timestamp;
     bool active = true;
 
-    bytes32 orderId = keccak256(abi.encodePacked(user, baseToken, quoteToken, price, amount, isBuy, timestamp));
+    uint256 currentOrderCount = OrderCounter.get();
+    OrderCounter.set(currentOrderCount + 1);
     
-    Order.set(orderId, user, baseToken, quoteToken, price, amount, isBuy, active, timestamp);
+    Order.set(currentOrderCount, user, baseToken, quoteToken, price, amount, isBuy, active, timestamp);
   }
 }

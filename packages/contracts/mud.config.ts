@@ -5,7 +5,7 @@ export default defineWorld({
   tables: {
     Order: {
       schema: {
-        orderId: "bytes32",
+        orderId: "uint256",
         user: "address",
         baseToken: "address",
         quoteToken: "address",
@@ -16,6 +16,12 @@ export default defineWorld({
         timestamp: "uint256",
       },
       key: ["orderId"],
+    },
+    OrderCounter: {
+      schema: {
+        value: "uint256",
+      },
+      key: [],
     },
   },
 });

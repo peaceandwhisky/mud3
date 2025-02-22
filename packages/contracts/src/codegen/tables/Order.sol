@@ -34,8 +34,8 @@ library Order {
   FieldLayout constant _fieldLayout =
     FieldLayout.wrap(0x009e080014141420200101200000000000000000000000000000000000000000);
 
-  // Hex-encoded key schema of (bytes32)
-  Schema constant _keySchema = Schema.wrap(0x002001005f000000000000000000000000000000000000000000000000000000);
+  // Hex-encoded key schema of (uint256)
+  Schema constant _keySchema = Schema.wrap(0x002001001f000000000000000000000000000000000000000000000000000000);
   // Hex-encoded value schema of (address, address, address, uint256, uint256, bool, bool, uint256)
   Schema constant _valueSchema = Schema.wrap(0x009e08006161611f1f60601f0000000000000000000000000000000000000000);
 
@@ -81,9 +81,9 @@ library Order {
   /**
    * @notice Get user.
    */
-  function getUser(bytes32 orderId) internal view returns (address user) {
+  function getUser(uint256 orderId) internal view returns (address user) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
     return (address(bytes20(_blob)));
@@ -92,9 +92,9 @@ library Order {
   /**
    * @notice Get user.
    */
-  function _getUser(bytes32 orderId) internal view returns (address user) {
+  function _getUser(uint256 orderId) internal view returns (address user) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
     return (address(bytes20(_blob)));
@@ -103,9 +103,9 @@ library Order {
   /**
    * @notice Set user.
    */
-  function setUser(bytes32 orderId, address user) internal {
+  function setUser(uint256 orderId, address user) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((user)), _fieldLayout);
   }
@@ -113,9 +113,9 @@ library Order {
   /**
    * @notice Set user.
    */
-  function _setUser(bytes32 orderId, address user) internal {
+  function _setUser(uint256 orderId, address user) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((user)), _fieldLayout);
   }
@@ -123,9 +123,9 @@ library Order {
   /**
    * @notice Get baseToken.
    */
-  function getBaseToken(bytes32 orderId) internal view returns (address baseToken) {
+  function getBaseToken(uint256 orderId) internal view returns (address baseToken) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
     return (address(bytes20(_blob)));
@@ -134,9 +134,9 @@ library Order {
   /**
    * @notice Get baseToken.
    */
-  function _getBaseToken(bytes32 orderId) internal view returns (address baseToken) {
+  function _getBaseToken(uint256 orderId) internal view returns (address baseToken) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
     return (address(bytes20(_blob)));
@@ -145,9 +145,9 @@ library Order {
   /**
    * @notice Set baseToken.
    */
-  function setBaseToken(bytes32 orderId, address baseToken) internal {
+  function setBaseToken(uint256 orderId, address baseToken) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreSwitch.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((baseToken)), _fieldLayout);
   }
@@ -155,9 +155,9 @@ library Order {
   /**
    * @notice Set baseToken.
    */
-  function _setBaseToken(bytes32 orderId, address baseToken) internal {
+  function _setBaseToken(uint256 orderId, address baseToken) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreCore.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((baseToken)), _fieldLayout);
   }
@@ -165,9 +165,9 @@ library Order {
   /**
    * @notice Get quoteToken.
    */
-  function getQuoteToken(bytes32 orderId) internal view returns (address quoteToken) {
+  function getQuoteToken(uint256 orderId) internal view returns (address quoteToken) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
     return (address(bytes20(_blob)));
@@ -176,9 +176,9 @@ library Order {
   /**
    * @notice Get quoteToken.
    */
-  function _getQuoteToken(bytes32 orderId) internal view returns (address quoteToken) {
+  function _getQuoteToken(uint256 orderId) internal view returns (address quoteToken) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
     return (address(bytes20(_blob)));
@@ -187,9 +187,9 @@ library Order {
   /**
    * @notice Set quoteToken.
    */
-  function setQuoteToken(bytes32 orderId, address quoteToken) internal {
+  function setQuoteToken(uint256 orderId, address quoteToken) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreSwitch.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((quoteToken)), _fieldLayout);
   }
@@ -197,9 +197,9 @@ library Order {
   /**
    * @notice Set quoteToken.
    */
-  function _setQuoteToken(bytes32 orderId, address quoteToken) internal {
+  function _setQuoteToken(uint256 orderId, address quoteToken) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreCore.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((quoteToken)), _fieldLayout);
   }
@@ -207,9 +207,9 @@ library Order {
   /**
    * @notice Get price.
    */
-  function getPrice(bytes32 orderId) internal view returns (uint256 price) {
+  function getPrice(uint256 orderId) internal view returns (uint256 price) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
     return (uint256(bytes32(_blob)));
@@ -218,9 +218,9 @@ library Order {
   /**
    * @notice Get price.
    */
-  function _getPrice(bytes32 orderId) internal view returns (uint256 price) {
+  function _getPrice(uint256 orderId) internal view returns (uint256 price) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
     return (uint256(bytes32(_blob)));
@@ -229,9 +229,9 @@ library Order {
   /**
    * @notice Set price.
    */
-  function setPrice(bytes32 orderId, uint256 price) internal {
+  function setPrice(uint256 orderId, uint256 price) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreSwitch.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((price)), _fieldLayout);
   }
@@ -239,9 +239,9 @@ library Order {
   /**
    * @notice Set price.
    */
-  function _setPrice(bytes32 orderId, uint256 price) internal {
+  function _setPrice(uint256 orderId, uint256 price) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreCore.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((price)), _fieldLayout);
   }
@@ -249,9 +249,9 @@ library Order {
   /**
    * @notice Get amount.
    */
-  function getAmount(bytes32 orderId) internal view returns (uint256 amount) {
+  function getAmount(uint256 orderId) internal view returns (uint256 amount) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 4, _fieldLayout);
     return (uint256(bytes32(_blob)));
@@ -260,9 +260,9 @@ library Order {
   /**
    * @notice Get amount.
    */
-  function _getAmount(bytes32 orderId) internal view returns (uint256 amount) {
+  function _getAmount(uint256 orderId) internal view returns (uint256 amount) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 4, _fieldLayout);
     return (uint256(bytes32(_blob)));
@@ -271,9 +271,9 @@ library Order {
   /**
    * @notice Set amount.
    */
-  function setAmount(bytes32 orderId, uint256 amount) internal {
+  function setAmount(uint256 orderId, uint256 amount) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreSwitch.setStaticField(_tableId, _keyTuple, 4, abi.encodePacked((amount)), _fieldLayout);
   }
@@ -281,9 +281,9 @@ library Order {
   /**
    * @notice Set amount.
    */
-  function _setAmount(bytes32 orderId, uint256 amount) internal {
+  function _setAmount(uint256 orderId, uint256 amount) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreCore.setStaticField(_tableId, _keyTuple, 4, abi.encodePacked((amount)), _fieldLayout);
   }
@@ -291,9 +291,9 @@ library Order {
   /**
    * @notice Get isBuy.
    */
-  function getIsBuy(bytes32 orderId) internal view returns (bool isBuy) {
+  function getIsBuy(uint256 orderId) internal view returns (bool isBuy) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 5, _fieldLayout);
     return (_toBool(uint8(bytes1(_blob))));
@@ -302,9 +302,9 @@ library Order {
   /**
    * @notice Get isBuy.
    */
-  function _getIsBuy(bytes32 orderId) internal view returns (bool isBuy) {
+  function _getIsBuy(uint256 orderId) internal view returns (bool isBuy) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 5, _fieldLayout);
     return (_toBool(uint8(bytes1(_blob))));
@@ -313,9 +313,9 @@ library Order {
   /**
    * @notice Set isBuy.
    */
-  function setIsBuy(bytes32 orderId, bool isBuy) internal {
+  function setIsBuy(uint256 orderId, bool isBuy) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreSwitch.setStaticField(_tableId, _keyTuple, 5, abi.encodePacked((isBuy)), _fieldLayout);
   }
@@ -323,9 +323,9 @@ library Order {
   /**
    * @notice Set isBuy.
    */
-  function _setIsBuy(bytes32 orderId, bool isBuy) internal {
+  function _setIsBuy(uint256 orderId, bool isBuy) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreCore.setStaticField(_tableId, _keyTuple, 5, abi.encodePacked((isBuy)), _fieldLayout);
   }
@@ -333,9 +333,9 @@ library Order {
   /**
    * @notice Get active.
    */
-  function getActive(bytes32 orderId) internal view returns (bool active) {
+  function getActive(uint256 orderId) internal view returns (bool active) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 6, _fieldLayout);
     return (_toBool(uint8(bytes1(_blob))));
@@ -344,9 +344,9 @@ library Order {
   /**
    * @notice Get active.
    */
-  function _getActive(bytes32 orderId) internal view returns (bool active) {
+  function _getActive(uint256 orderId) internal view returns (bool active) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 6, _fieldLayout);
     return (_toBool(uint8(bytes1(_blob))));
@@ -355,9 +355,9 @@ library Order {
   /**
    * @notice Set active.
    */
-  function setActive(bytes32 orderId, bool active) internal {
+  function setActive(uint256 orderId, bool active) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreSwitch.setStaticField(_tableId, _keyTuple, 6, abi.encodePacked((active)), _fieldLayout);
   }
@@ -365,9 +365,9 @@ library Order {
   /**
    * @notice Set active.
    */
-  function _setActive(bytes32 orderId, bool active) internal {
+  function _setActive(uint256 orderId, bool active) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreCore.setStaticField(_tableId, _keyTuple, 6, abi.encodePacked((active)), _fieldLayout);
   }
@@ -375,9 +375,9 @@ library Order {
   /**
    * @notice Get timestamp.
    */
-  function getTimestamp(bytes32 orderId) internal view returns (uint256 timestamp) {
+  function getTimestamp(uint256 orderId) internal view returns (uint256 timestamp) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 7, _fieldLayout);
     return (uint256(bytes32(_blob)));
@@ -386,9 +386,9 @@ library Order {
   /**
    * @notice Get timestamp.
    */
-  function _getTimestamp(bytes32 orderId) internal view returns (uint256 timestamp) {
+  function _getTimestamp(uint256 orderId) internal view returns (uint256 timestamp) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 7, _fieldLayout);
     return (uint256(bytes32(_blob)));
@@ -397,9 +397,9 @@ library Order {
   /**
    * @notice Set timestamp.
    */
-  function setTimestamp(bytes32 orderId, uint256 timestamp) internal {
+  function setTimestamp(uint256 orderId, uint256 timestamp) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreSwitch.setStaticField(_tableId, _keyTuple, 7, abi.encodePacked((timestamp)), _fieldLayout);
   }
@@ -407,9 +407,9 @@ library Order {
   /**
    * @notice Set timestamp.
    */
-  function _setTimestamp(bytes32 orderId, uint256 timestamp) internal {
+  function _setTimestamp(uint256 orderId, uint256 timestamp) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreCore.setStaticField(_tableId, _keyTuple, 7, abi.encodePacked((timestamp)), _fieldLayout);
   }
@@ -417,9 +417,9 @@ library Order {
   /**
    * @notice Get the full data.
    */
-  function get(bytes32 orderId) internal view returns (OrderData memory _table) {
+  function get(uint256 orderId) internal view returns (OrderData memory _table) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     (bytes memory _staticData, EncodedLengths _encodedLengths, bytes memory _dynamicData) = StoreSwitch.getRecord(
       _tableId,
@@ -432,9 +432,9 @@ library Order {
   /**
    * @notice Get the full data.
    */
-  function _get(bytes32 orderId) internal view returns (OrderData memory _table) {
+  function _get(uint256 orderId) internal view returns (OrderData memory _table) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     (bytes memory _staticData, EncodedLengths _encodedLengths, bytes memory _dynamicData) = StoreCore.getRecord(
       _tableId,
@@ -448,7 +448,7 @@ library Order {
    * @notice Set the full data using individual values.
    */
   function set(
-    bytes32 orderId,
+    uint256 orderId,
     address user,
     address baseToken,
     address quoteToken,
@@ -464,7 +464,7 @@ library Order {
     bytes memory _dynamicData;
 
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreSwitch.setRecord(_tableId, _keyTuple, _staticData, _encodedLengths, _dynamicData);
   }
@@ -473,7 +473,7 @@ library Order {
    * @notice Set the full data using individual values.
    */
   function _set(
-    bytes32 orderId,
+    uint256 orderId,
     address user,
     address baseToken,
     address quoteToken,
@@ -489,7 +489,7 @@ library Order {
     bytes memory _dynamicData;
 
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreCore.setRecord(_tableId, _keyTuple, _staticData, _encodedLengths, _dynamicData, _fieldLayout);
   }
@@ -497,7 +497,7 @@ library Order {
   /**
    * @notice Set the full data using the data struct.
    */
-  function set(bytes32 orderId, OrderData memory _table) internal {
+  function set(uint256 orderId, OrderData memory _table) internal {
     bytes memory _staticData = encodeStatic(
       _table.user,
       _table.baseToken,
@@ -513,7 +513,7 @@ library Order {
     bytes memory _dynamicData;
 
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreSwitch.setRecord(_tableId, _keyTuple, _staticData, _encodedLengths, _dynamicData);
   }
@@ -521,7 +521,7 @@ library Order {
   /**
    * @notice Set the full data using the data struct.
    */
-  function _set(bytes32 orderId, OrderData memory _table) internal {
+  function _set(uint256 orderId, OrderData memory _table) internal {
     bytes memory _staticData = encodeStatic(
       _table.user,
       _table.baseToken,
@@ -537,7 +537,7 @@ library Order {
     bytes memory _dynamicData;
 
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreCore.setRecord(_tableId, _keyTuple, _staticData, _encodedLengths, _dynamicData, _fieldLayout);
   }
@@ -604,9 +604,9 @@ library Order {
   /**
    * @notice Delete all data for given keys.
    */
-  function deleteRecord(bytes32 orderId) internal {
+  function deleteRecord(uint256 orderId) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreSwitch.deleteRecord(_tableId, _keyTuple);
   }
@@ -614,9 +614,9 @@ library Order {
   /**
    * @notice Delete all data for given keys.
    */
-  function _deleteRecord(bytes32 orderId) internal {
+  function _deleteRecord(uint256 orderId) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     StoreCore.deleteRecord(_tableId, _keyTuple, _fieldLayout);
   }
@@ -665,9 +665,9 @@ library Order {
   /**
    * @notice Encode keys as a bytes32 array using this table's field layout.
    */
-  function encodeKeyTuple(bytes32 orderId) internal pure returns (bytes32[] memory) {
+  function encodeKeyTuple(uint256 orderId) internal pure returns (bytes32[] memory) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = orderId;
+    _keyTuple[0] = bytes32(uint256(orderId));
 
     return _keyTuple;
   }
