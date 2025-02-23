@@ -75,7 +75,7 @@ export function App() {
         const orderExists = prevOrders.some(order => order.orderId === currentOrder.orderId);
         if (!orderExists) {
           const newOrders = [...prevOrders, currentOrder];
-          return newOrders.sort((a, b) => Number(a.price) - Number(b.price)); // bigint を number に変換
+          return newOrders.sort((a, b) => Number(b.price) - Number(a.price)); // bigint を number に変換
         }
         return prevOrders;
       });
@@ -110,7 +110,7 @@ export function App() {
 
     const orderEntries = Object.entries(orders.records[""].Order);
     const sortedOrderEntries = orderEntries.sort(([, a], [, b]) => {
-      return a.price < b.price ? -1 : a.price > b.price ? 1 : 0;
+      return a.price > b.price ? -1 : a.price < b.price ? 1 : 0;
     });
     const sortedOrders = sortedOrderEntries.map(([, order]) => order);
     
